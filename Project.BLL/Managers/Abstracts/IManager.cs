@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.DAL.Repostories.Abstracts
+namespace Project.BLL.Managers.Abstracts
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IManager<T> where T : IEntity
     {
         //List Command
 
@@ -21,16 +21,18 @@ namespace Project.DAL.Repostories.Abstracts
         List<T> GetModifieds();
 
         //Modify Commands
-        void Add(T item);
+        string Add(T item);
         Task AddAsync(T item);
-        Task AddRangeAsync(List<T> list);
-        void AddRange(List<T> list);
+        Task<string> AddRangeAsync(List<T> list);
+        string AddRange(List<T> list);
         void Delete(T item);
         void DeleteRange(List<T> list);
         Task UpdateAsync(T item);
         Task UpdateRangeAsync(List<T> list);
-        void Destroy(T item);
-        void DestroyRange(List<T> list);
+        string Destroy(T item);
+        string DestroyRange(List<T> list);
+
+        List<string> DestroyRangeWithText(List<T> list);
 
         //Linq Commands
         List<T> Where(Expression<Func<T, bool>> exp);
@@ -39,12 +41,12 @@ namespace Project.DAL.Repostories.Abstracts
         T FirstOrDefault(Expression<Func<T, bool>> exp);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp);
 
-        object Select(Expression<Func<T, object>> exp); //Anonymus Type'a mapping'e destek vermek icin kullanabilecegimiz bir Select metodudur...
-        IQueryable<X> Select<X>(Expression<Func<T, X>> exp); //Generic tip'e göre işlem yapmasını istedigimizi Select metodu...
+        object Select(Expression<Func<T, object>> exp);
+        IQueryable<X> Select<X>(Expression<Func<T, X>> exp);
 
         //Find Command
 
-        //Todo: x01 params
+
 
         Task<T> FindAsync(int id);
 
@@ -52,9 +54,6 @@ namespace Project.DAL.Repostories.Abstracts
         List<T> GetFirstDatas(int count);
 
 
-        //Expression tipi 
-
-        // x => x.CategoryName == "asdad"
 
     }
 }

@@ -21,13 +21,13 @@ namespace Project.DAL.Repostories.Concretes
             _db = db;
         }
 
-        public void Save()
-        { 
-        _db.SaveChanges();
+        protected void Save()
+        {
+            _db.SaveChanges();
         }
-
         public void Add(T item)
         {
+
             _db.Set<T>().Add(item);
             Save();
         }
@@ -58,6 +58,7 @@ namespace Project.DAL.Repostories.Concretes
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> exp)
         {
             return await _db.Set<T>().AnyAsync(exp);
+
         }
 
         public void Delete(T item)
@@ -74,6 +75,7 @@ namespace Project.DAL.Repostories.Concretes
 
         public void Destroy(T item)
         {
+
             _db.Set<T>().Remove(item);
             Save();
         }
@@ -99,14 +101,16 @@ namespace Project.DAL.Repostories.Concretes
             return await _db.Set<T>().FirstOrDefaultAsync(exp);
         }
 
-        public async Task<List<T>> GetActiveAsync()
-        {
-            return await _db.Set<T>().Where(x => x.Status != ENTITIES.Enums.DataStatus.Deleted).ToListAsync();
-        }
-
         public List<T> GetActives()
         {
             return Where(x => x.Status != ENTITIES.Enums.DataStatus.Deleted);
+        }
+
+        public async Task<List<T>> GetActivesAsync()
+        {
+            return await _db.Set<T>().Where(x => x.Status != ENTITIES.Enums.DataStatus.Deleted).ToListAsync();
+
+
         }
 
         public List<T> GetAll()
@@ -122,6 +126,7 @@ namespace Project.DAL.Repostories.Concretes
         public List<T> GetLastDatas(int count)
         {
             return _db.Set<T>().OrderByDescending(x => x.CreatedDate).Take(count).ToList();
+
         }
 
         public List<T> GetModifieds()
@@ -129,9 +134,10 @@ namespace Project.DAL.Repostories.Concretes
             return Where(x => x.Status == ENTITIES.Enums.DataStatus.Updated);
         }
 
-        public List<T> GetPassive()
+        public List<T> GetPassives()
         {
             return Where(x => x.Status == ENTITIES.Enums.DataStatus.Deleted);
+
         }
 
         public object Select(Expression<Func<T, object>> exp)
@@ -142,6 +148,7 @@ namespace Project.DAL.Repostories.Concretes
         public IQueryable<X> Select<X>(Expression<Func<T, X>> exp)
         {
             return _db.Set<T>().Select(exp);
+
         }
 
         public async Task UpdateAsync(T item)
@@ -162,5 +169,7 @@ namespace Project.DAL.Repostories.Concretes
         {
             return _db.Set<T>().Where(exp).ToList();
         }
+
+
     }
 }
